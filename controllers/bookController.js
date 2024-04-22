@@ -197,20 +197,21 @@ const updateBooksByISBN = async (req, res) => {
                 success: false,
                 message: 'No Records found'
             })
-        }
-        const {title, author, description, publicationYear, ISBN} = req.body;
-        const data = await db.promise().query(`UPDATE books set title = ?, author = ?, description = ?, publicationYear = ?, ISBN = ? WHERE ISBN = ?`, [title, author, description, publicationYear, ISBN, bookISBN]);
-        if(data[0].length == 0) {
-            return res.status(404).send({
-                success: false,
-                message: 'Error in update data'
-            })
         } else {
-            res.status(200).send({
-                success: true,
-                message: 'Book updated successfully',
-            })
-        }
+            const {title, author, description, publicationYear, ISBN} = req.body;
+            const data = await db.promise().query(`UPDATE books set title = ?, author = ?, description = ?, publicationYear = ?, ISBN = ? WHERE ISBN = ?`, [title, author, description, publicationYear, ISBN, bookISBN]);
+            if(data[0].length == 0) {
+                return res.status(404).send({
+                    success: false,
+                    message: 'Error in update data'
+                })
+            } else {
+                res.status(200).send({
+                    success: true,
+                    message: 'Book updated successfully',
+                })
+            }
+        } 
     } catch (error) {
         console.log('error', error);
         res.status(500).send({
